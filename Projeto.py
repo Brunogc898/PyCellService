@@ -276,11 +276,11 @@ ATUALIZAR SERVIÇO
 SERVIÇOS DISPONÍVEIS
 -----------------------------
 """)
-    for nome in servicos:
+     for nome in servicos:
+      print("--------------------------------------------------------------------------------------------")
+      print(f"NOME: {nome} - DESCRIÇÃO: {servicos[nome]['descricao']} - VALOR: {servicos[nome]['valor']}")
      print("--------------------------------------------------------------------------------------------")
-     print(f"NOME: {nome} - DESCRIÇÃO: {servicos[nome]['descricao']} - VALOR: {servicos[nome]['valor']}")
-    print("--------------------------------------------------------------------------------------------")
-    input("PRESSIONE ESPAÇO PARA CONTINUAR ")
+     input("PRESSIONE ESPAÇO PARA CONTINUAR ")
 
   elif m == "4":
    
