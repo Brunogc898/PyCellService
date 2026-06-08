@@ -1,17 +1,35 @@
 
-#fazer a parte de relatorio, para mostrar os usuarios cadastrados, os serviços prestados e os aparelhos consertados
-
 import os
 
-usuarios = {}
+usuarios = {
+  "12345678900": {"nome": "João Silva", "email": "joao.silva@gmail.com"},
+  "98765432100": {"nome": "Maria Santos", "email": "mariasantos@gmail.com"},
+  "11122233344": {"nome": "Carlos Oliveira", "email": "carlos.oliveira@gmail.com"},
+  "55566677788": {"nome": "Ana Costa", "email": "ana.costa@gmail.com"},
+  "99988877766": {"nome": "Pedro Almeida", "email": "pedro.almeida@gmail.com"}
+}
 
-servicos = {}
+servicos = {
+ "MANUTENÇÃO": {"descricao": "Manutenção geral de celulares", "valor": 100.0},
+ "TROCA DE TELA": {"descricao": "Troca de tela para celulares", "valor": 150.0},
+ "TROCA DE BATERIA": {"descricao": "Troca de bateria para celulares", "valor": 80.0},
+ "TROCA DE CARCAÇA": {"descricao": "Troca de carcaça para celulares", "valor": 120.0},
+ "LIMPEZA INTERNA": {"descricao": "Limpeza interna de celulares", "valor": 50.0},
+ "RECUPERAÇÃO DE DADOS": {"descricao": "Recuperação de dados para celulares", "valor": 200.0},
+ "FORMATAÇÃO": {"descricao": "Formatação de celulares", "valor": 70.0}
+}
 
-consertos = []
+consertos = [
+["12345678900", "iPhone 12", "Tela quebrada"],
+["98765432100", "Samsung Galaxy S21", "Bateria viciada"],
+["11122233344", "Xiaomi Redmi Note 10", "Problema no carregamento"],
+["55566677788", "Motorola Moto G Power", "FORMATAÇÃO"],
+["99988877766", "OnePlus 9 Pro", "LIMPEZA INTERNA"]
+]
 
 m= " "
 while m!= "0":
-  os.system('clear')
+  os.system('cls')
   print("""
 -----------------------------
 CONSERTA CELULAR DA PRINCIPAL
@@ -40,8 +58,8 @@ CONSERTA APARELHO
 
     if consertar == "1":
         print("""
- -----------------------------
-INFORMAÇÃO DO APARELHO
+-----------------------------
+PROBLEMAS DIVERSOS
 -----------------------------
 1° INFORME O NOME DO SEU APARELHO
 2° INFORME O PROBLEMA DO SEU APARELHO
@@ -50,11 +68,14 @@ INFORMAÇÃO DO APARELHO
         aparelho=input("NOME DO APARELHO: ")
         problema=input("PROBLEMA DO APARELHO: ")
         cpf=input("INFORME SEU CPF CASO FOR UM USUARIO CADASTADO :")
+        
         if cpf in usuarios:
          print("USUÁRIO ENCONTRADO")
-         consertos.append({"aparelho": aparelho, "problema": problema, "cpf": cpf})
+         consertos.append([cpf, aparelho, problema])
+         
          print("APARELHO CADASTRADO PARA CONSERTO COM SUCESSO!")
          input("PRESSIONE ENTER PARA CONTINUAR...")
+        
         else:
          print("USUÁRIO NÃO ENCONTRADO, POR FAVOR CADASTRE-SE ANTES DE SOLICITAR O CONSERTO")
          input("PRESSIONE ENTER PARA CONTINUAR...")
@@ -65,11 +86,38 @@ INFORMAÇÃO DO APARELHO
 SERVIÇOS DISPONÍVEIS
 -----------------------------
 """)
-      print("MANUTENÇÃO")
-      input("PRESSIONE ENTER PARA CONTINUAR...")
+      for nome in servicos:
+       print("----------------------------------------------------------------------------")
+       print(f"NOME DO SERVIÇO: {nome} - DESCRIÇÃO: {servicos[nome]['descricao']} - VALOR: R${servicos[nome]['valor']}")
+      
+      print("----------------------------------------------------------------------------")
+      tipo=input("ESCOLHA UM SERVIÇO PARA SOLICITAR  ")
+      
+      if tipo in servicos:
+       print("""
+---------------------------------
+INFORMAÇÃO PARA PRESTAR O SERVIÇO
+---------------------------------
+1° INFORME O NOME DO SEU APARELHO
+2° INFORME SEU CPF CASO FOR UM USUARIO CADASTADO""")
+       
+       aparelho=input("NOME DO APARELHO: ")
+       cpf=input("INFORME SEU CPF CASO FOR UM USUARIO CADASTADO :")
+       
+       if cpf in usuarios:
+           print("USUÁRIO ENCONTRADO")
+           consertos.append([cpf, aparelho, tipo])
+          
+           print("SERVIÇO SOLICITADO COM SUCESSO!")
+           input("PRESSIONE ENTER PARA CONTINUAR...")
+        
+       else:
+          print("USUÁRIO NÃO ENCONTRADO, POR FAVOR CADASTRE-SE ANTES DE SOLICITAR O CONSERTO")
+          input("PRESSIONE ENTER PARA CONTINUAR...")
   
   elif m == "2" :
     usuario = " "
+    os.system('cls')
     while usuario != "0":
       print("""
 -----------------------------
@@ -140,10 +188,11 @@ ATUALIZAR USUARIO
   elif m == "3":
    
    servico = " "
+   os.system('cls')
    while servico !="0":
     print("""
 -----------------------------
-TIPO DE SERVIÇO
+SERVIÇOS
 -----------------------------
 1- CRIAR SERVIÇO
 2- DELETAR SERVIÇO
@@ -152,6 +201,7 @@ TIPO DE SERVIÇO
 0- SAIR
 """)
     servico = input("ESCOLHA: ")
+    os.system('cls')
     if servico == "1":
      print("""
 -----------------------------
@@ -171,6 +221,7 @@ CRIAR SERVIÇO
      input("PRESSIONE ENTER PARA CONTINUAR ")
    
     elif servico == "2":
+     os.system('cls')
      print("""
 -----------------------------
 DELETAR SERVIÇO
@@ -197,6 +248,7 @@ DELETAR SERVIÇO
       input("PRESSIONE ENTER PARA CONTINUAR...")
    
     elif servico == "3":
+     os.system('cls')
      print("""
 -----------------------------
 ATUALIZAR SERVIÇO
@@ -224,50 +276,54 @@ ATUALIZAR SERVIÇO
 SERVIÇOS DISPONÍVEIS
 -----------------------------
 """)
-    print("MANUTENÇÃO")
+    for nome in servicos:
+     print("--------------------------------------------------------------------------------------------")
+     print(f"NOME: {nome} - DESCRIÇÃO: {servicos[nome]['descricao']} - VALOR: {servicos[nome]['valor']}")
+    print("--------------------------------------------------------------------------------------------")
     input("PRESSIONE ESPAÇO PARA CONTINUAR ")
 
-  elif m =="4":
+  elif m == "4":
    
    relatorio=" "
    while relatorio != "0":
+    os.system('cls')
     print("""
 -----------------------------
 RELATORIO
 -----------------------------
 1- RELATORIO DE USUARIOS
-2- SERVIÇOS PRESTADOOS
-3- APARELHOS CONSETADOS
+2- SERVIÇOS/CONSERTO Á SER PRESTADOS
 0- VOLTAR
 """)
     relatorio=input("ESCOLHA: ")
 
     if relatorio == "1":
+     os.system('cls')
      print("""
 -----------------------------
 RELATORIO DE USUARIOS
 -----------------------------
 """)
-     print("MANUTENÇÃO")
+     for cpf in usuarios:
+      print("----------------------------------------------------------------------------")
+      print(f"CPF: {cpf} - NOME: {usuarios[cpf]['nome']} - E-MAIL: {usuarios[cpf]['email']}")
+     
+     print("----------------------------------------------------------------------------")
      input("PRESSIONE ESPAÇO PARA CONTINUAR ")
 
     elif relatorio == "2":
+      os.system('cls')
       print("""
 -----------------------------
 RELATORIO DE SERVIÇOS PRESTADOS
 -----------------------------
 """)
-      print("MANUTENÇÃO")
-      input("PRESSIONE ESPAÇO PARA CONTINUAR " )
-    
-    elif relatorio == "3":
-      print("""
------------------------------
-RELATORIO DE APARELHOS CONSERTADOS
------------------------------
-""")
-      print("MANUTENÇÃO")
+      for cpf in consertos:
+        print("---------------------------------------------------------------------------------------------------")
+        print(f"CPF: {cpf[0]} - APARELHO: {cpf[1]} - PROBLEMA/SERVIÇO: {cpf[2]}")
+      print("---------------------------------------------------------------------------------------------------")
       input("PRESSIONE ESPAÇO PARA CONTINUAR ")
+        
   
   elif m == "0":
     print("SAINDO DO PROGRAMA...")
