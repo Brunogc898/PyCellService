@@ -1,4 +1,4 @@
-#TROCAR AS CHAVES DOS SERVIÇOS POR NUMEROES E A PARTE DO CONSERTO TROCA PRA DICIONARIO E TB POR DATA DE NASCIMENTO
+#E A PARTE DO CONSERTO TROCA PRA DICIONARIO E TB POR DATA DE NASCIMENTO
 
 import os
 
@@ -7,26 +7,26 @@ usuarios = {
   "98765432100": {"nome": "Maria Santos", "email": "mariasantos@gmail.com"},
   "11122233344": {"nome": "Carlos Oliveira", "email": "carlos.oliveira@gmail.com"},
   "55566677788": {"nome": "Ana Costa", "email": "ana.costa@gmail.com"},
-  "99988877766": {"nome": "Pedro Almeida", "email": "pedro.almeida@gmail.com"}
+  "99988877766": {"nome": "Pedro Almeida", "email": "pedro.almeida@gmail.com","data":"06/04/2002"}
 }
 
 servicos = {
- "MANUTENÇÃO": {"descricao": "Manutenção geral de celulares", "valor": 100.0},
- "TROCA DE TELA": {"descricao": "Troca de tela para celulares", "valor": 150.0},
- "TROCA DE BATERIA": {"descricao": "Troca de bateria para celulares", "valor": 80.0},
- "TROCA DE CARCAÇA": {"descricao": "Troca de carcaça para celulares", "valor": 120.0},
- "LIMPEZA INTERNA": {"descricao": "Limpeza interna de celulares", "valor": 50.0},
- "RECUPERAÇÃO DE DADOS": {"descricao": "Recuperação de dados para celulares", "valor": 200.0},
- "FORMATAÇÃO": {"descricao": "Formatação de celulares", "valor": 70.0}
+ "0001": {"tipo":"MANUTENÇÃO","descricao": "Manutenção geral de celulares", "valor": 100.0},
+ "0002": {"tipo":"TROCA DE TELA","descricao": "Troca de tela para celulares", "valor": 150.0},
+ "0003": {"tipo":"TROCA DE BATERIA","descricao": "Troca de bateria para celulares", "valor": 80.0},
+ "0004": {"tipo":"TROCA DE CARCAÇA","descricao": "Troca de carcaça para celulares", "valor": 120.0},
+ "0005": {"tipo":"LIMPEZA INTERNA","descricao": "Limpeza interna de celulares", "valor": 50.0},
+ "0006": {"tipo":"RECUPERAÇÃO DE DADOS","descricao": "Recuperação de dados para celulares", "valor": 200.0},
+ "0007": {"tipo":"FORMATAÇÃO","descricao": "Formatação de celulares", "valor": 70.0}
 }
 
-consertos = [
+consertos = {
 ["12345678900", "iPhone 12", "Tela quebrada"],
 ["98765432100", "Samsung Galaxy S21", "Bateria viciada"],
 ["11122233344", "Xiaomi Redmi Note 10", "Problema no carregamento"],
 ["55566677788", "Motorola Moto G Power", "FORMATAÇÃO"],
 ["99988877766", "OnePlus 9 Pro", "LIMPEZA INTERNA"]
-]
+}
 
 m= " "
 while m!= "0":
@@ -139,12 +139,14 @@ CADASTRAR USUARIO
 1° INFORME SEU NOME
 2° E-MAIL PARA CONTATO
 3° SEU CPF
+4° SUA DATA DE NASCIMENTO
 """)
 
        nome=input("NOME: ")
        email=input("E-MAIL: ")
-       cpf=(input("CPF: "))
-       usuarios[cpf] = {"nome": nome, "email": email}
+       cpf=input("CPF: ")
+       date=input("SUA DATA DE NASCIMENTO: ")
+       usuarios[cpf] = {"nome": nome, "email": email, "data": date }
 
        print("CADASTRO REALIZADO COM SUCESSO!")
        input("PRESSIONE ENTER PARA CONTINUAR ")
@@ -175,16 +177,33 @@ DELETAR USUARIO
         input("PRESSIONE ENTER PARA CONTINUAR...")
     
       elif usuario == "3":
-       print("""
------------------------------
-ATUALIZAR USUARIO
------------------------------
-1° INFORME NOVAMENTE SEU NOME, E-MAIL E CPF
-""")
-       nome=input("NOME: ")
-       email=input("E-MAIL:")
-       cpf=input("CPF: ")
-       usuarios[cpf] = {"nome": nome, "email": email}
+       cpf=input("PRIMEIRO, DIGITE SEU CPF: ")
+       
+       if cpf in usuarios:
+        m = " "
+        while m!="0":
+            print("""
+      -----------------------------
+      ATUALIZAR USUARIO
+      -----------------------------
+      [QUAIS INFORMÇÔES QUER ATUALIZAR]
+      1- NOME
+      2- E-MAIL
+      3- DATA DE NASCIMENTO
+      4- TUDO
+      O- VOLTAR
+      """)
+            m = input("DIGITE: ")
+            if m == "1":
+            nome=input("NOME NOVO: ")
+            if nome in usuarios:
+
+            
+            email=input("E-MAIL:")
+            cpf=input("CPF: ")
+            usuarios[cpf] = {"nome": nome, "email": email}
+       else:
+        print("USA")
 
   elif m == "3":
    
@@ -216,7 +235,13 @@ CRIAR SERVIÇO
      nome=input("NOME DO SERVIÇO: ")
      descricao=input("DESCRIÇÃO DO SERVIÇO: ")
      valor=float(input("VALOR DO SERVIÇO: "))
-     servicos[nome] = {"descricao": descricao, "valor": valor}
+     cod=input("CÓDIGO DO SEU SERVIÇO: ")
+     
+     if cod in servicos:
+      print("CÓDIGO DE SERVIÇO JÁ EXISTENTE, TENTE OUTRO CÓDIGO")
+      input("PRESSIONE ENTER PARA CONTINUAR ")
+     else:
+      servicos[cod] = {"tipo": nome ,"descricao": descricao, "valor": valor}
 
      print("SERVIÇO CRIADO COM SUCESSO!")
      input("PRESSIONE ENTER PARA CONTINUAR ")
@@ -260,16 +285,22 @@ ATUALIZAR SERVIÇO
      nome=input("NOME DO SERVIÇO: ")
      descricao=input("DESCRIÇÃO DO SERVIÇO: ")
      valor=float(input("VALOR DO SERVIÇO: "))
+     cod=input("CÓDIGO DO SEU SERVIÇO: ")
+     if cod in servicos:
      
-     if nome in servicos:
-      print("SERVIÇO ENCONTRADO")
-      servicos[nome] = {"descricao": descricao, "valor": valor}
-      print("SERVIÇO ATUALIZADO COM SUCESSO!")
-      input("PRESSIONE ENTER PARA CONTINUAR ")
-    
+      if nome in servicos:
+       print("SERVIÇO ENCONTRADO")
+       servicos[cod] = {'tipo': nome,"descricao": descricao, "valor": valor}
+       print("SERVIÇO ATUALIZADO COM SUCESSO!")
+       input("PRESSIONE ENTER PARA CONTINUAR ")
+      
+      else:
+       print("SERVIÇO NÃO ENCOTRADO")
+       input("PRESSIONE ENTER PARA CONTINUAR...")
+     
      else:
-      print("SERVIÇO NÃO ENCOTRADO")
-      input("PRESSIONE ENTER PARA CONTINUAR...")
+      print("CÓDIGO DE SERVIÇO JÁ EXISTENTE, TENTE OUTRO CÓDIGO")
+      input("PRESSIONE ENTER PARA CONTINUAR ")
 
     elif servico == "4":
      print("""
@@ -279,7 +310,7 @@ SERVIÇOS DISPONÍVEIS
 """)
      for nome in servicos:
       print("--------------------------------------------------------------------------------------------")
-      print(f"NOME: {nome} - DESCRIÇÃO: {servicos[nome]['descricao']} - VALOR: {servicos[nome]['valor']}")
+      print(f"COD: {nome} - NOME: {servicos[nome]['tipo']} - DESCRIÇÃO: {servicos}['descricao'] VALOR: {servicos[nome]['valor']}")
      print("--------------------------------------------------------------------------------------------")
      input("PRESSIONE ESPAÇO PARA CONTINUAR ")
 
