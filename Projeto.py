@@ -41,9 +41,6 @@ try:
  arqConsertos.close()
 
 except:
- usuarios = {}
- servicos = {}
- consertos = {}
  arqUsuarios = open("Usuarios.dat", "wb")
  arqServicos = open("Servicos.dat", "wb")
  arqConsertos = open("Consertos.dat", "wb")
