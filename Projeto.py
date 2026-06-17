@@ -8,6 +8,7 @@ usuarios = {
   "98765432100": {"nome": "Maria Santos", "email": "mariasantos@gmail.com", "data": "15/03/1998"},
   "11122233344": {"nome": "Carlos Oliveira", "email": "carlos.oliveira@gmail.com", "data": "22/08/1995"},
   "55566677788": {"nome": "Ana Costa", "email": "ana.costa@gmail.com", "data": "30/11/2001"},
+  "12312445545": {"nome": "Ana Luiza", "email": "analuiza@gmail.com", "data": "12/12/2000"},
   "99988877766": {"nome": "Pedro Almeida", "email": "pedro.almeida@gmail.com", "data": "06/04/2002"}
 }
 
@@ -95,9 +96,10 @@ PROBLEMAS DIVERSOS
         
         if cpf in usuarios:
          print("USUÁRIO ENCONTRADO")
-         cod=str(random.randint(0,999))
+         cod=str(random.randint(000,999))
+         
          while cod in consertos:
-           cod=str(random.randint(0,999))
+           cod=str(random.randint(000,999))
          
          consertos[cod] = { "cpf": cpf, "aparelho": aparelho, "problema": problema }
          print("COD DE CONSERTO: ", cod, "- CPF: ", cpf, "- APARELHO: ", aparelho, "- PROBLEMA: ", problema)
@@ -137,10 +139,10 @@ INFORMAÇÃO PARA PRESTAR O SERVIÇO
        if cpf in usuarios:
          os.system('cls')
          print("USUÁRIO ENCONTRADO!")
-         cod=str(random.randint(0,999))
+         cod=str(random.randint(000,999))
          
          while cod in consertos:
-           cod=str(random.randint(0,999))
+           cod=str(random.randint(000,999))
          
          consertos[cod] = { "cpf": cpf, "aparelho": aparelho, "problema": tipo }
          os.system('cls')
@@ -169,11 +171,11 @@ INFORMAÇÃO PARA PRESTAR O SERVIÇO
         
         elif desc.upper() == "N":
           print("CANCELAMENTO DO CANCELAMENTO DO CONSERTO")
-          input("PRESSIONE ENTER PARA CONTINUAR...")
+          input("PRESSIONE ENTER PARA CONTINUAR... ")
         
         else:
           print("OPÇÃO INVÁLIDA, POR FAVOR DIGITE S PARA SIM OU N PARA NÃO")
-          input("PRESSIONE ENTER PARA CONTINUAR...")
+          input("PRESSIONE ENTER PARA CONTINUAR... ")
     
     
     elif consertar == "0":
@@ -196,6 +198,7 @@ USUÁRIO
 1- CADASTRAR USUÁRIO
 2- DELETAR USUÁRIO
 3- ATUALIZAR USUÁRIO
+4- PESQUISAR USUÁRIO
 0- VOLTAR
 """)
       usuario=input("ESCOLHA: ")
@@ -319,6 +322,100 @@ ATUALIZAR USUÁRIO
                print("OPÇÃO INVÁLIDA, POR FAVOR ESCOLHA UMA OPÇÃO VÁLIDA")
                input("PRESSIONE ENTER PARA CONTINUAR ")
             
+      elif usuario == "4":
+        
+        pesquisar= " "
+        os.system('cls')
+        while pesquisar != "0":
+         print("""
+-----------------------------
+PESQUISAR USUÁRIO
+-----------------------------
+1- PRIMEIRO NOME
+2- ULTIMO NOME
+3- PELO CPF
+4- E-MAIL
+0- VOLTAR
+""")
+         pesquisar=input("DIGITE:")
+        
+         if pesquisar == "1":
+           os.system('cls')
+           print("""
+-----------------------------
+PROCURANDO PELO PRIMEIRO NOME
+-----------------------------
+""")
+           nome=input("DIGITE SOMENTE O PRIMEIRO NOME: ")
+           
+           for nomes in usuarios:
+             
+             if usuarios[nomes]["nome"].startswith(nome):
+               print("CPF: ", nomes)
+               print("NOME: ",usuarios[nomes]["nome"])
+               print()
+           
+           input("PRESSIONE ENTER PARA CONTINUAR ")
+        
+         elif pesquisar == "2":
+           os.system('cls')
+           print("""
+-----------------------------
+PROCURANDO PELO ULTIMO NOME
+-----------------------------
+""")
+           nome=input("DIGITE O ULTIMO NOME: ")
+
+           for nomes in usuarios:
+             
+             if usuarios[nomes]["nome"].endswith(nome):
+               print("NOME:", nomes)
+               print("CPF:", usuarios[nomes]["nome"])
+               print()
+           
+           input("PRESSIONE ENTER PARA CONTINUAR ")
+        
+         elif pesquisar == "3":
+           os.system('cls')
+           print("""
+-----------------------------
+PROCURANDO PELO CPF
+-----------------------------
+""")
+           cpff=input("DIGITE SOMENTE CPF: ")
+
+           for cpf in usuarios:
+             if cpf == cpff:
+               print("CPF: ",cpf)
+
+           input("PRESSIONE ENTER PARA CONTINUAR ")
+      
+         elif pesquisar == "4":
+           os.system('cls')
+           print("""
+-----------------------------
+PROCURANDO PELO E-MAIL
+-----------------------------
+""")
+           mail=input("DIGITE SEU E-MAIL: ")
+
+           for mails in usuarios:
+             if mail == usuarios[mails]["email"]:
+               print("E-MAIL: ",usuarios[mails]["email"])
+               print("CPF:", mails) 
+          
+           input("PRESSIONE ENTER PARA CONTINUAR ")
+          
+
+         elif pesquisar == "0":
+           print("VOLTANDO...")
+           input("PRESSIONE ENTER PARA CONTINUAR ")
+        
+        else:
+         print("OPÇÃO INVÁLIDA, POR FAVOR ESCOLHA UMA OPÇÃO VÁLIDA")
+         input("PRESSIONE ENTER PARA CONTINUAR ")
+
+      
       elif usuario == "0":
        print("VOLTANDO...")
        input("PRESSIONE ENTER PARA CONTINUAR ")
