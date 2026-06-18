@@ -1,33 +1,34 @@
 
+import datetime
 import pickle
 import os
 import random
 
 usuarios = {
-  "12345678900": {"nome": "João Silva", "email": "joao.silva@gmail.com", "data": "10/01/2000"},
-  "98765432100": {"nome": "Maria Santos", "email": "mariasantos@gmail.com", "data": "15/03/1998"},
-  "11122233344": {"nome": "Carlos Oliveira", "email": "carlos.oliveira@gmail.com", "data": "22/08/1995"},
-  "55566677788": {"nome": "Ana Costa", "email": "ana.costa@gmail.com", "data": "30/11/2001"},
-  "12312445545": {"nome": "Ana Luiza", "email": "analuiza@gmail.com", "data": "12/12/2000"},
-  "99988877766": {"nome": "Pedro Almeida", "email": "pedro.almeida@gmail.com", "data": "06/04/2002"}
+  "12345678900": {"nome": "João Silva", "email": "joao.silva@gmail.com", "data": "10/01/2000", "estado": True},
+  "98765432100": {"nome": "Maria Santos", "email": "mariasantos@gmail.com", "data": "15/03/1998", "estado": True},
+  "11122233344": {"nome": "Carlos Oliveira", "email": "carlos.oliveira@gmail.com", "data": "22/08/1995", "estado": True},
+  "55566677788": {"nome": "Ana Costa", "email": "ana.costa@gmail.com", "data": "30/11/2001", "estado": True},
+  "12312445545": {"nome": "Ana Luiza", "email": "analuiza@gmail.com", "data": "12/12/2000", "estado": True},
+  "99988877766": {"nome": "Pedro Almeida", "email": "pedro.almeida@gmail.com", "data": "06/04/2002", "estado": True}
 }
 
 servicos = {
- "2345": {"tipo":"MANUTENÇÃO","descricao": "Manutenção geral de celulares", "valor": 100.0, "estado": True},
- "5789": {"tipo":"TROCA DE TELA","descricao": "Troca de tela para celulares", "valor": 150.0, "estado": True},
- "2353": {"tipo":"TROCA DE BATERIA","descricao": "Troca de bateria para celulares", "valor": 80.0, "estado": True},
- "1434": {"tipo":"TROCA DE CARCAÇA","descricao": "Troca de carcaça para celulares", "valor": 120.0, "estado": True},
- "0982": {"tipo":"LIMPEZA INTERNA","descricao": "Limpeza interna de celulares", "valor": 50.0, "estado": True},
- "9284": {"tipo":"RECUPERAÇÃO DE DADOS","descricao": "Recuperação de dados para celulares", "valor": 200.0, "estado": False},
- "1242": {"tipo":"FORMATAÇÃO","descricao": "Formatação de celulares", "valor": 70.0, "estado": False}
+ "2345": {"tipo":"MANUTENÇÃO","descricao": "Manutenção geral de celulares", "valor": "100.0", "estado": True},
+ "5789": {"tipo":"TROCA DE TELA","descricao": "Troca de tela para celulares", "valor": "150.0", "estado": True},
+ "2353": {"tipo":"TROCA DE BATERIA","descricao": "Troca de bateria para celulares", "valor": "80.0", "estado": True},
+ "1434": {"tipo":"TROCA DE CARCAÇA","descricao": "Troca de carcaça para celulares", "valor": "120.0", "estado": True},
+ "0982": {"tipo":"LIMPEZA INTERNA","descricao": "Limpeza interna de celulares", "valor": "50.0", "estado": True},
+ "9284": {"tipo":"RECUPERAÇÃO DE DADOS","descricao": "Recuperação de dados para celulares", "valor": "200.0", "estado": False},
+ "1242": {"tipo":"FORMATAÇÃO","descricao": "Formatação de celulares", "valor": "70.0", "estado": False}
 }
 
 consertos = {
-"001": {"cpf": "12345678900","aparelho": "iPhone 12","problema": "Tela quebrada"},
-"002": {"cpf": "98765432100","aparelho": "Samsung Galaxy S21","problema": "Bateria viciada"},
-"003": {"cpf": "11122233344","aparelho": "Xiaomi Redmi Note 10","problema": "Problema no carregamento"},
-"004": {"cpf": "55566677788","aparelho": "Motorola Moto G Power","problema": "Formatação"},
-"005": {"cpf": "99988877766","aparelho": "OnePlus 9 Pro","problema": "Limpeza interna"}
+"001": {"cpf": "12345678900","aparelho": "iPhone 12","problema": "Tela quebrada", "desconto": "10"},
+"002": {"cpf": "98765432100","aparelho": "Samsung Galaxy S21","problema": "Bateria viciada", "desconto": "0"},
+"003": {"cpf": "11122233344","aparelho": "Xiaomi Redmi Note 10","problema": "Problema no carregamento", "desconto": "0"},
+"004": {"cpf": "55566677788","aparelho": "Motorola Moto G Power","problema": "Formatação", "desconto": "0"},
+"005": {"cpf": "99988877766","aparelho": "OnePlus 9 Pro","problema": "Limpeza interna", "desconto": "0"}
 }
 
 try:
@@ -96,13 +97,16 @@ PROBLEMAS DIVERSOS
         
         if cpf in usuarios:
          print("USUÁRIO ENCONTRADO")
-         cod=str(random.randint(000,999))
+         cod = "%03d" % (len(consertos) + 1)
+        
+         if usuarios[cpf]['data'][:5] == datetime.datetime.now().strftime("%d/%m"):
+          print("PARABÉNS! VOCÊ GANHOU 10% DE DESCONTO POR SER ANIVERSARIANTE DO MÊS!")
+          descinto = "10"
+         else:
+          descinto = "0"
          
-         while cod in consertos:
-           cod=str(random.randint(000,999))
-         
-         consertos[cod] = { "cpf": cpf, "aparelho": aparelho, "problema": problema }
-         print("COD DE CONSERTO: ", cod, "- CPF: ", cpf, "- APARELHO: ", aparelho, "- PROBLEMA: ", problema)
+         consertos[cod] = { "cpf": cpf, "aparelho": aparelho, "problema": problema, "desconto": descinto }
+         print("COD DE CONSERTO: ", cod, "- CPF: ", cpf, "- APARELHO: ", aparelho, "- PROBLEMA: ", problema, "- DESCONTO: ", consertos[cod]['desconto'], "%")
          print("APARELHO CADASTRADO PARA CONSERTO COM SUCESSO!")
          input("PRESSIONE ENTER PARA CONTINUAR...")
         
@@ -139,14 +143,16 @@ INFORMAÇÃO PARA PRESTAR O SERVIÇO
        if cpf in usuarios:
          os.system('cls')
          print("USUÁRIO ENCONTRADO!")
-         cod=str(random.randint(000,999))
+         cod = "%03d" % (len(consertos) + 1)
+         if usuarios[cpf]['data'][:5] == datetime.datetime.now().strftime("%d/%m"):
+          print("PARABÉNS! VOCÊ GANHOU 10% DE DESCONTO POR SER ANIVERSARIANTE DO MÊS!")
+          descinto = "10"
+         else:         
+           descinto = "0"
          
-         while cod in consertos:
-           cod=str(random.randint(000,999))
-         
-         consertos[cod] = { "cpf": cpf, "aparelho": aparelho, "problema": tipo }
+         consertos[cod] = { "cpf": cpf, "aparelho": aparelho, "problema": tipo, "desconto": descinto }
          os.system('cls')
-         print("COD DE CONSERTO: ", cod, "- CPF: ", cpf, "- APARELHO: ", aparelho, "- PROBLEMA: ", tipo)
+         print("COD DE CONSERTO: ", cod, "- CPF: ", cpf, "- APARELHO: ", aparelho, "- PROBLEMA: ", tipo, "- DESCONTO: ", consertos[cod]['desconto'], "%")
          print("APARELHO CADASTRADO PARA CONSERTO COM SUCESSO!")
          input("PRESSIONE ENTER PARA CONTINUAR...")
         
@@ -196,7 +202,7 @@ INFORMAÇÃO PARA PRESTAR O SERVIÇO
 USUÁRIO
 -----------------------------
 1- CADASTRAR USUÁRIO
-2- DELETAR USUÁRIO
+2- DESATIVAR USUÁRIO
 3- ATUALIZAR USUÁRIO
 4- PESQUISAR USUÁRIO
 0- VOLTAR
@@ -241,20 +247,20 @@ CADASTRAR USUÁRIO
         while usuario_del != "0":
           print("""
 -----------------------------
-DELETAR USUÁRIO
+DESATIVAR USUÁRIO
 -----------------------------
-[1° INFORME SE QUER DELETAR O USUÁRIO]
+[1° INFORME SE QUER DESATIVAR O USUÁRIO]
 """)
-          print("CPF: ", usuario_ase, "- NOME: ", usuarios[usuario_ase]['nome'], "- E-MAIL: ", usuarios[usuario_ase]['email'], "- DATA DE NASCIMENTO: ", usuarios[usuario_ase]['data'])
-          conf = input("CONFIRME SE QUER DELETAR O USUÁRIO (S/N): ")
+          print("CPF: ", usuario_ase, "- NOME: ", usuarios[usuario_ase]['nome'], "- E-MAIL: ", usuarios[usuario_ase]['email'], "- DATA DE NASCIMENTO: ", usuarios[usuario_ase]['data'], "- ESTADO: ", usuarios[usuario_ase]['estado'])
+          conf = input("CONFIRME SE QUER DESATIVAR O USUÁRIO (S/N): ")
             
           if conf.upper() == "S":
-             del usuarios[usuario_ase]
-             print("USUÁRIO DELETADO COM SUCESSO!")
+             usuarios[usuario_ase]['estado'] = False
+             print("USUÁRIO DESATIVADO COM SUCESSO!")
              usuario_del = "0"
             
           elif conf.upper() == "N":
-              print("CANCELAMENTO DA DELETA DE USUARIO")
+              print("CANCELAMENTO DA DESATIVAÇÃO DO USUÁRIO")
               input("PRESSIONE ENTER PARA CONTINUAR ")
               usuario_del = "0"
 
@@ -454,11 +460,11 @@ CRIAR SERVIÇO
 
      nome=input("NOME DO SERVIÇO: ")
      descricao=input("DESCRIÇÃO DO SERVIÇO: ")
-     valor=float(input("VALOR DO SERVIÇO: "))
-     cod = str(random.randint(1000, 9999))
-     
+     valor=(input("VALOR DO SERVIÇO: "))
+     cod = "%04d" % random.randint(0, 9999)
+
      while cod in servicos:
-       cod = str(random.randint(1000, 9999))
+      cod = "%04d" % random.randint(0, 9999)
      
      servicos[cod] = {"tipo": nome ,"descricao": descricao, "valor": valor, "estado": True}
      print("COD DO SERVIÇO: ", cod, "- NOME: ", nome, "- DESCRIÇÃO: ", descricao, "- VALOR: R$", valor, "- ESTADO: ", servicos[cod]['estado'])
@@ -688,7 +694,7 @@ RELATÓRIO DE USUÁRIOS
 """)
      for cpf in usuarios:
       print("------------------------------------------------------------------------------------------------------------------")
-      print("CPF: ", cpf, "- NOME: ", usuarios[cpf]['nome'],  "- E-MAIL: ", usuarios[cpf]['email'], "- DATA DE NASCIMENTO: ", usuarios[cpf]['data'])
+      print("CPF: ", cpf, "- NOME: ", usuarios[cpf]['nome'],  "- E-MAIL: ", usuarios[cpf]['email'], "- DATA DE NASCIMENTO: ", usuarios[cpf]['data'], "- ESTADO: ", usuarios[cpf]['estado'])
      print("------------------------------------------------------------------------------------------------------------------")
      input("PRESSIONE ESPAÇO PARA CONTINUAR ")
 
@@ -701,7 +707,7 @@ RELATÓRIO DE SERVIÇOS/CONSERTOS A SEREM PRESTADOS
 """)
       for cpf in consertos:
         print("------------------------------------------------------------------------------------------------------------------")
-        print("COD: ", cpf, "- CPF: ", consertos[cpf]['cpf'], "- APARELHO: ", consertos[cpf]['aparelho'], "- PROBLEMA: ", consertos[cpf]['problema'])
+        print("COD: ", cpf, "- CPF: ", consertos[cpf]['cpf'], "- APARELHO: ", consertos[cpf]['aparelho'], "- PROBLEMA: ", consertos[cpf]['problema'], "- DESCONTO: ", consertos[cpf]['desconto'], "%")
       print("------------------------------------------------------------------------------------------------------------------")
       input("PRESSIONE ESPAÇO PARA CONTINUAR ")
 
