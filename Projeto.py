@@ -1,4 +1,10 @@
 
+#MUDA A PARETE DE RELATORIO EM ALGO SOSTIFICADO
+
+
+
+
+
 import datetime
 import pickle
 import os
@@ -679,24 +685,41 @@ MOSTRAR SERVIÇOS
 -----------------------------
 RELATÓRIO
 -----------------------------
-1- RELATÓRIO DE USUARIOS
+1- RELATÓRIO DE USUÁRIOS
 2- SERVIÇOS/CONSERTO A SER PRESTADOS
 0- VOLTAR
 """)
     relatorio=input("ESCOLHA: ")
 
     if relatorio == "1":
-     os.system('cls')
-     print("""
+     rel_usuario = " "
+     while rel_usuario !="0":
+      os.system('cls')
+      print("""
 -----------------------------
 RELATÓRIO DE USUÁRIOS
 -----------------------------
+1- USUÁRIOS ATIVOS
+2- USUÁRIOS DESATIVOS
+3- TODOS OS USUÁRIOS
 """)
-     for cpf in usuarios:
-      print("------------------------------------------------------------------------------------------------------------------")
-      print("CPF: ", cpf, "- NOME: ", usuarios[cpf]['nome'],  "- E-MAIL: ", usuarios[cpf]['email'], "- DATA DE NASCIMENTO: ", usuarios[cpf]['data'], "- ESTADO: ", usuarios[cpf]['estado'])
-     print("------------------------------------------------------------------------------------------------------------------")
-     input("PRESSIONE ESPAÇO PARA CONTINUAR ")
+      rel_usuario=input("DIGITE: ")
+      if rel_usuario == "1":
+        print("""
+-----------------------------
+USUÁRIOS ATIVOS
+-----------------------------
+""")
+        print("""
+ _____________
+|             |
+|     CPF     |
+|_____________|
+""")
+        for cof in usuarios:
+          if usuarios[cpf]["estado"] == True:
+            print()
+
 
     elif relatorio == "2":
       os.system('cls')
