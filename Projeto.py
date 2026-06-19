@@ -30,11 +30,11 @@ servicos = {
 }
 
 consertos = {
-"001": {"cpf": "12345678900","aparelho": "iPhone 12","problema": "Tela quebrada", "desconto": "10"},
-"002": {"cpf": "98765432100","aparelho": "Samsung Galaxy S21","problema": "Bateria viciada", "desconto": "0"},
-"003": {"cpf": "11122233344","aparelho": "Xiaomi Redmi Note 10","problema": "Problema no carregamento", "desconto": "0"},
-"004": {"cpf": "55566677788","aparelho": "Motorola Moto G Power","problema": "Formatação", "desconto": "0"},
-"005": {"cpf": "99988877766","aparelho": "OnePlus 9 Pro","problema": "Limpeza interna", "desconto": "0"}
+"001": {"cpf": "12345678900","aparelho": "iPhone 12","problema": "Tela quebrada", "desconto": "10", "estado": True},
+"002": {"cpf": "98765432100","aparelho": "Samsung Galaxy S21","problema": "Bateria viciada", "desconto": "0", "estado": True},
+"003": {"cpf": "11122233344","aparelho": "Xiaomi Redmi Note 10","problema": "Problema no carregamento", "desconto": "0", "estado": True},
+"004": {"cpf": "55566677788","aparelho": "Motorola Moto G Power","problema": "Formatação", "desconto": "0", "estado": True},
+"005": {"cpf": "99988877766","aparelho": "OnePlus 9 Pro","problema": "Limpeza interna", "desconto": "0", "estado": True}
 }
 
 try:
@@ -89,6 +89,7 @@ CONSERTA APARELHO
     consertar=input("ESCOLHA: ")
 
     if consertar == "1":
+        os.system('cls')
         print("""
 -----------------------------
 PROBLEMAS DIVERSOS
@@ -99,20 +100,25 @@ PROBLEMAS DIVERSOS
 """)
         aparelho=input("MARCA DO APARELHO: ")
         problema=input("PROBLEMA DO APARELHO: ")
-        cpf=input("INFORME SEU CPF CASO FOR UM USUÁRIO CADASTADO :")
+        cpf=input("INFORME SEU CPF CASO FOR UM USUÁRIO CADASTADO: ")
         
         if cpf in usuarios:
+         os.system('cls')
          print("USUÁRIO ENCONTRADO")
+         print()
          cod = "%03d" % (len(consertos) + 1)
         
          if usuarios[cpf]['data'][:5] == datetime.datetime.now().strftime("%d/%m"):
           print("PARABÉNS! VOCÊ GANHOU 10% DE DESCONTO POR SER ANIVERSARIANTE DO MÊS!")
           descinto = "10"
+         
          else:
           descinto = "0"
          
-         consertos[cod] = { "cpf": cpf, "aparelho": aparelho, "problema": problema, "desconto": descinto }
-         print("COD DE CONSERTO: ", cod, "- CPF: ", cpf, "- APARELHO: ", aparelho, "- PROBLEMA: ", problema, "- DESCONTO: ", consertos[cod]['desconto'], "%")
+         consertos[cod] = { "cpf": cpf, "aparelho": aparelho, "problema": problema, "desconto": descinto, "estado": True }
+         print("| %-15s | %-15s | %-20s | %-20s | %-10s |" % ("COD", "CPF", "APARELHO", "PROBLEMA", "DESCONTO"))
+         print("| %-15s | %-15s | %-20s | %-20s | %-10s |" % (cod, cpf, aparelho, problema, consertos[cod]["desconto"] + "%"))
+         print()
          print("APARELHO CADASTRADO PARA CONSERTO COM SUCESSO!")
          input("PRESSIONE ENTER PARA CONTINUAR...")
         
@@ -126,14 +132,16 @@ PROBLEMAS DIVERSOS
 CATÁLOGO DE SERVIÇOS
 -----------------------------
 """)
+      print("----------------------------------------------------------------------------------------------------")
+      print("|%-10s | %-20s | %-37s | %-10s | %-10s|" % ("COD", "NOME", "DESCRIÇÃO", "VALOR", "ESTADO"))
+      print("----------------------------------------------------------------------------------------------------")
       for nome in servicos:
-       print("---------------------------------------------------------------------------------------------------------------------")
-       print("COD:", nome, "- NOME:", servicos[nome]['tipo'], "- DESCRIÇÃO:", servicos[nome]['descricao'], "- VALOR:", servicos[nome]['valor'], "- ESTADO:", servicos[nome]['estado'])
-      
-      print("---------------------------------------------------------------------------------------------------------------------")
+        print("|%-10s | %-20s | %-37s | %-10s | %-10s|" % (nome,servicos[nome]["tipo"],servicos[nome]["descricao"],servicos[nome]["valor"],servicos[nome]["estado"]))
+
+      print("----------------------------------------------------------------------------------------------------")
       tipo=input("ESCOLHA UM SERVIÇO PARA SOLICITAR  ")
       
-      if tipo in servicos:
+      if tipo in servicos and servicos[tipo]["estado"] == True:
        os.system('cls')
        print("""
 ---------------------------------
@@ -150,22 +158,31 @@ INFORMAÇÃO PARA PRESTAR O SERVIÇO
          os.system('cls')
          print("USUÁRIO ENCONTRADO!")
          cod = "%03d" % (len(consertos) + 1)
+         
          if usuarios[cpf]['data'][:5] == datetime.datetime.now().strftime("%d/%m"):
           print("PARABÉNS! VOCÊ GANHOU 10% DE DESCONTO POR SER ANIVERSARIANTE DO MÊS!")
           descinto = "10"
+         
          else:         
+           
            descinto = "0"
          
-         consertos[cod] = { "cpf": cpf, "aparelho": aparelho, "problema": tipo, "desconto": descinto }
+         consertos[cod] = { "cpf": cpf, "aparelho": aparelho, "problema": tipo, "desconto": descinto, "estado": True }
          os.system('cls')
-         print("COD DE CONSERTO: ", cod, "- CPF: ", cpf, "- APARELHO: ", aparelho, "- PROBLEMA: ", tipo, "- DESCONTO: ", consertos[cod]['desconto'], "%")
+         print("| %-15s | %-15s | %-20s | %-20s | %-10s |" % ("COD", "CPF", "APARELHO", "PROBLEMA", "DESCONTO"))
+         print("| %-15s | %-15s | %-20s | %-20s | %-10s |" % (cod, cpf, aparelho, tipo, consertos[cod]["desconto"] + "%"))
+         
          print("APARELHO CADASTRADO PARA CONSERTO COM SUCESSO!")
          input("PRESSIONE ENTER PARA CONTINUAR...")
         
        else:
           print("USUÁRIO NÃO ENCONTRADO, POR FAVOR CADASTRE-SE ANTES DE SOLICITAR O CONSERTO")
           input("PRESSIONE ENTER PARA CONTINUAR...")
-
+      
+      else:
+        print("SERVIÇO NÃO ENCONTRADO OU INDISPONÍVEL, POR FAVOR ESCOLHA UM SERVIÇO VÁLIDO E DISPONÍVEL")
+        input("PRESSIONE ENTER PARA CONTINUAR...")
+    
     elif consertar == "3":
       cod=input("PRIMEIRO, DIGITE O CÓDIGO DO CONSERTO PARA CANCELAR: ")
       
@@ -174,10 +191,19 @@ INFORMAÇÃO PARA PRESTAR O SERVIÇO
         cod=input("CÓDIGO DO CONSERTO: ")
       
       if cod in consertos:
+        
+        print("----------------------------------------------------------------------------------------------------------------")
+        print("| %-10s | %-15s | %-20s | %-25s | %-10s |" % ("COD", "CPF", "APARELHO", "PROBLEMA", "DESCONTO"))
+        print("----------------------------------------------------------------------------------------------------------------")
+        for cod in consertos:
+         if consertos[cod]["estado"]== True:
+          print("| %-10s | %-15s | %-20s | %-25s | %-10s |" % (cod,consertos[cod]["cpf"],consertos[cod]["aparelho"],consertos[cod]["problema"],consertos[cod]["desconto"] + "%"))
+        print("----------------------------------------------------------------------------------------------------------------")
+        
         desc=input("TEM CERTEZA QUE QUER CANCELAR O CONSERTO COM (S/N): ")
         
         if desc.upper() == "S":
-         del consertos[cod]
+         consertos[cod]['estado'] = False
          print("CONSERTO CANCELADO COM SUCESSO!")
          input("PRESSIONE ENTER PARA CONTINUAR...")
         
@@ -237,7 +263,9 @@ CADASTRAR USUÁRIO
        
        else:
         usuarios[cpf] = {"nome": nome, "email": email, "data": date }
-        print("CPF: ", cpf, "- NOME: ", nome, "- E-MAIL: ", email, "- DATA DE NASCIMENTO: ", date)
+
+        print("| %-15s | %-15s | %-30s | %-20s | %-10s |" % ("CPF", "NOME", "E-MAIL", "DATA DE NASCIMENTO", "ESTADO"))
+        print("| %-15s | %-15s | %-30s | %-20s | %-10s |" % (cpf, nome, email, date, usuarios[cpf]['estado']))
         print("CADASTRO REALIZADO COM SUCESSO!")
         input("PRESSIONE ENTER PARA CONTINUAR ")
 
@@ -249,26 +277,23 @@ CADASTRAR USUÁRIO
         usuario_ase=input("CPF: ")
        
        if usuario_ase in usuarios:
-        usuario_del = " "
-        while usuario_del != "0":
           print("""
 -----------------------------
 DESATIVAR USUÁRIO
 -----------------------------
 [1° INFORME SE QUER DESATIVAR O USUÁRIO]
 """)
-          print("CPF: ", usuario_ase, "- NOME: ", usuarios[usuario_ase]['nome'], "- E-MAIL: ", usuarios[usuario_ase]['email'], "- DATA DE NASCIMENTO: ", usuarios[usuario_ase]['data'], "- ESTADO: ", usuarios[usuario_ase]['estado'])
+          print("| %-15s | %-15s | %-30s | %-20s | %-10s |" % ("CPF", "NOME", "E-MAIL", "DATA DE NASCIMENTO", "ESTADO"))
+          print("| %-15s | %-15s | %-30s | %-20s | %-10s |" % (cpf, nome, email, date, usuarios[cpf]['estado']))
           conf = input("CONFIRME SE QUER DESATIVAR O USUÁRIO (S/N): ")
             
           if conf.upper() == "S":
              usuarios[usuario_ase]['estado'] = False
              print("USUÁRIO DESATIVADO COM SUCESSO!")
-             usuario_del = "0"
             
           elif conf.upper() == "N":
               print("CANCELAMENTO DA DESATIVAÇÃO DO USUÁRIO")
               input("PRESSIONE ENTER PARA CONTINUAR ")
-              usuario_del = "0"
 
           else:
              print("USUARIO NÃO ENCOTRADO")
@@ -284,6 +309,7 @@ DESATIVAR USUÁRIO
        
         if cpf in usuarios:
           m = " "
+          
           while m!="0":
               print("""
 -----------------------------
@@ -473,12 +499,17 @@ CRIAR SERVIÇO
       cod = "%04d" % random.randint(0, 9999)
      
      servicos[cod] = {"tipo": nome ,"descricao": descricao, "valor": valor, "estado": True}
-     print("COD DO SERVIÇO: ", cod, "- NOME: ", nome, "- DESCRIÇÃO: ", descricao, "- VALOR: R$", valor, "- ESTADO: ", servicos[cod]['estado'])
+     print("------------------------------------------------------------------------------------------------")
+     print("| %-10s | %-20s | %-30s | %-10s | %-10s |" % ("COD", "NOME", "DESCRIÇÃO", "VALOR", "ESTADO"))
+     print("------------------------------------------------------------------------------------------------")
+     print("| %-10s | %-20s | %-30s | R$ %-7.2f | %-10s |" %(cod,nome,descricao,valor,servicos[cod]["estado"]))
+     print("------------------------------------------------------------------------------------------------")
 
      print("SERVIÇO CRIADO COM SUCESSO!")
      input("PRESSIONE ENTER PARA CONTINUAR ")
    
     elif servico == "2":
+     
      cod=input("PRIMEIRO, DIGITE O CÓDIGO DO SERVIÇO PARA DELETAR/DESATIVAR: ")
      while cod not in servicos and cod != "0":
       os.system('cls')
@@ -488,6 +519,7 @@ CRIAR SERVIÇO
      if cod in servicos:
       os.system('cls')
       deletar = " "
+      
       while deletar != "0":
         print("""
 -----------------------------
@@ -498,7 +530,10 @@ DELETAR/DESATIVAR/ATIVAR SERVIÇO
 3- ATIVAR SERVIÇO
 0- VOLTAR
 """)
-        print("COD: ", cod, "- NOME: ", servicos[cod]['tipo'], "- DESCRIÇÃO: ", servicos[cod]['descricao'], "- VALOR: R$", servicos[cod]['valor'], "- ESTADO: ", servicos[cod]['estado'])
+        print("------------------------------------------------------------------------------------------------")
+        print("| %-10s | %-20s | %-30s | %-10s | %-10s |" % ("COD", "NOME", "DESCRIÇÃO", "VALOR", "ESTADO"))  
+        print("| %-10s | %-20s | %-30s | R$ %-7.2f | %-10s |" %(cod,servicos[cod]['tipo'],servicos[cod]['descricao'],servicos[cod]['valor'],servicos[cod]['estado']))
+        print("------------------------------------------------------------------------------------------------")
         deletar = input("ESCOLHA: ")
         
         if deletar == "1":
@@ -567,7 +602,10 @@ ATUALIZAR SERVIÇO
 5- ESTADO DO SERVIÇO
 0- VOLTAR
   """)
-        print("COD: ", cod, "- NOME: ", servicos[cod]['tipo'], "- DESCRIÇÃO: ", servicos[cod]['descricao'], "- VALOR: R$", servicos[cod]['valor'], "- ESTADO: ", servicos[cod]['estado'])
+        print("------------------------------------------------------------------------------------------------")
+        print("| %-10s | %-20s | %-30s | %-10s | %-10s |" % ("COD", "NOME", "DESCRIÇÃO", "VALOR", "ESTADO"))  
+        print("| %-10s | %-20s | %-30s | R$ %-7.2f | %-10s |" %(cod,servicos[cod]['tipo'],servicos[cod]['descricao'],servicos[cod]['valor'],servicos[cod]['estado']))
+        print("------------------------------------------------------------------------------------------------")
         att=input("ESCOLHA: ")
 
         if att == "1":
@@ -642,30 +680,38 @@ MOSTRAR SERVIÇOS
       if P == "1":
         os.system('cls')
         
+        print("-------------------------------------------------------------------------------------------------------")
+        print("| %-10s | %-20s | %-37s | %-10s | %-10s |" % ("COD", "NOME", "DESCRIÇÃO", "VALOR", "ESTADO"))
+        print("-------------------------------------------------------------------------------------------------------")
+
         for nome in servicos:
-          if servicos[nome]['estado'] == True:
-            print("------------------------------------------------------------------------------------------------------------------")
-            print("COD:", nome, "- NOME:", servicos[nome]['tipo'], "- DESCRIÇÃO:", servicos[nome]['descricao'], "- VALOR:", servicos[nome]['valor'], "- ESTADO:", servicos[nome]['estado'])
-        print("---------------------------------------------------------------------------------------------------------------------")
+         print("| %-10s | %-20s | %-37s | %-10s | %-10s |" % (nome,servicos[nome]["tipo"],servicos[nome]["descricao"],servicos[nome]["valor"],servicos[nome]["estado"]))
+
+        print("-------------------------------------------------------------------------------------------------------")
         input("PRESSIONE ESPAÇO PARA CONTINUAR ")
       
       elif P == "2":
         os.system('cls')
         
+        print("-------------------------------------------------------------------------------------------------------")
+        print("| %-10s | %-20s | %-37s | %-10s | %-10s |" % ("COD", "NOME", "DESCRIÇÃO", "VALOR", "ESTADO"))
+        print("-------------------------------------------------------------------------------------------------------")
+
         for nome in servicos:
           if servicos[nome]['estado'] == False:
-            print("------------------------------------------------------------------------------------------------------------------")
-            print("COD:", nome, "- NOME:", servicos[nome]['tipo'], "- DESCRIÇÃO:", servicos[nome]['descricao'], "- VALOR:", servicos[nome]['valor'], "- ESTADO:", servicos[nome]['estado'])
-        print("---------------------------------------------------------------------------------------------------------------------")
+            print("| %-10s | %-20s | %-37s | %-10s | %-10s |" % (nome, servicos[nome]['tipo'], servicos[nome]['descricao'], servicos[nome]['valor'], servicos[nome]['estado']))
+        print("-------------------------------------------------------------------------------------------------------")
         input("PRESSIONE ESPAÇO PARA CONTINUAR ")
   
       elif P == "3":
         os.system('cls')
         
+        print("-------------------------------------------------------------------------------------------------------")
+        print("| %-10s | %-20s | %-37s | %-10s | %-10s |" % ("COD", "NOME", "DESCRIÇÃO", "VALOR", "ESTADO"))
+        print("-------------------------------------------------------------------------------------------------------")
         for nome in servicos:
-          print("------------------------------------------------------------------------------------------------------------------")
-          print("COD:", nome, "- NOME:", servicos[nome]['tipo'], "- DESCRIÇÃO:", servicos[nome]['descricao'], "- VALOR:", servicos[nome]['valor'], "- ESTADO:", servicos[nome]['estado'])
-        print("---------------------------------------------------------------------------------------------------------------------")
+          print("| %-10s | %-20s | %-37s | %-10s | %-10s |" % (nome, servicos[nome]['tipo'], servicos[nome]['descricao'], servicos[nome]['valor'], servicos[nome]['estado']))
+        print("-------------------------------------------------------------------------------------------------------")
         input("PRESSIONE ESPAÇO PARA CONTINUAR ")
       
       elif P == "0":
@@ -693,6 +739,7 @@ RELATÓRIO
 
     if relatorio == "1":
      rel_usuario = " "
+     
      while rel_usuario !="0":
       os.system('cls')
       print("""
@@ -702,37 +749,88 @@ RELATÓRIO DE USUÁRIOS
 1- USUÁRIOS ATIVOS
 2- USUÁRIOS DESATIVOS
 3- TODOS OS USUÁRIOS
+0- VOLTAR
 """)
       rel_usuario=input("DIGITE: ")
+      
       if rel_usuario == "1":
-        print("""
------------------------------
-USUÁRIOS ATIVOS
------------------------------
-""")
-        print("""
- _____________
-|             |
-|     CPF     |
-|_____________|
-""")
-        for cof in usuarios:
-          if usuarios[cpf]["estado"] == True:
-            print()
+        print("----------------------------------------------------------------------------------------------------------------")
+        print("| %-15s | %-20s | %-30s | %-12s |" % ("CPF", "NOME", "E-MAIL", "NASCIMENTO"))
+        print("----------------------------------------------------------------------------------------------------------------")
 
+        for cpf in usuarios:
+         if usuarios[cpf]["estado"] == True:
+           print("| %-15s | %-20s | %-30s | %-12s |" % (cpf,usuarios[cpf]["nome"],usuarios[cpf]["email"],usuarios[cpf]["data"]))
+        print("----------------------------------------------------------------------------------------------------------------")
+        input("PRESSIONE ESPAÇO PARA CONTINUAR ")
+
+      elif rel_usuario == "2":
+        print("----------------------------------------------------------------------------------------------------------------")
+        print("| %-15s | %-20s | %-30s | %-12s |" % ("CPF", "NOME", "E-MAIL", "NASCIMENTO"))
+        print("----------------------------------------------------------------------------------------------------------------")
+
+        for cpf in usuarios:
+         if usuarios[cpf]["estado"] == False:
+           print("| %-15s | %-20s | %-30s | %-12s |" % (cpf,usuarios[cpf]["nome"],usuarios[cpf]["email"],usuarios[cpf]["data"]))
+        print("----------------------------------------------------------------------------------------------------------------")
+        input("PRESSIONE ESPAÇO PARA CONTINUAR ")
+      
+      elif rel_usuario == "3":
+        print("----------------------------------------------------------------------------------------------------------------")
+        print("| %-15s | %-20s | %-30s | %-12s | %-10s |" % ("CPF", "NOME", "E-MAIL", "NASCIMENTO", "ESTADO"))
+        print("----------------------------------------------------------------------------------------------------------------")
+
+        for cpf in usuarios:
+         print("| %-15s | %-20s | %-30s | %-12s | %-10s |" % (cpf,usuarios[cpf]["nome"],usuarios[cpf]["email"],usuarios[cpf]["data"],usuarios[cpf]['estado']))
+        print("----------------------------------------------------------------------------------------------------------------")
+        input("PRESSIONE ESPAÇO PARA CONTINUAR ")
 
     elif relatorio == "2":
-      os.system('cls')
-      print("""
+      relatorio2 = " "
+      while relatorio2 != "0":
+       os.system('cls')
+       print("""
 -------------------------------------------------
 RELATÓRIO DE SERVIÇOS/CONSERTOS A SEREM PRESTADOS
 -------------------------------------------------
+1- SERVIÇOS/CONSERTOS ATIVOS
+2- SERVIÇOS/CONSERTOS INATIVOS
+3- TODOS OS SERVIÇOS/CONSERTOS
+0- VOLTAR
 """)
-      for cpf in consertos:
+      relatorio2=input("DIGITE: ")
+      
+      if relatorio2 == "1":
         print("------------------------------------------------------------------------------------------------------------------")
-        print("COD: ", cpf, "- CPF: ", consertos[cpf]['cpf'], "- APARELHO: ", consertos[cpf]['aparelho'], "- PROBLEMA: ", consertos[cpf]['problema'], "- DESCONTO: ", consertos[cpf]['desconto'], "%")
-      print("------------------------------------------------------------------------------------------------------------------")
-      input("PRESSIONE ESPAÇO PARA CONTINUAR ")
+        print("| %-10s | %-15s | %-20s | %-25s | %-10s |" % ("COD", "CPF", "APARELHO", "PROBLEMA", "DESCONTO"))
+        print("------------------------------------------------------------------------------------------------------------------")
+
+        for cod in consertos:
+         if consertos[cod]["estado"] == True:
+           print("| %-10s | %-15s | %-20s | %-25s | %-10s |" % (cod,consertos[cod]["cpf"],consertos[cod]["aparelho"],consertos[cod]["problema"],consertos[cod]["desconto"] + "%"))
+        print("------------------------------------------------------------------------------------------------------------------")
+        input("PRESSIONE ESPAÇO PARA CONTINUAR ")
+
+      elif relatorio2 == "2":
+        print("------------------------------------------------------------------------------------------------------------------")
+        print("| %-10s | %-15s | %-20s | %-25s | %-10s |" % ("COD", "CPF", "APARELHO", "PROBLEMA", "DESCONTO"))
+        print("------------------------------------------------------------------------------------------------------------------")
+
+        for cod in consertos:
+         if consertos[cod]["estado"] == False:
+           print("| %-10s | %-15s | %-20s | %-25s | %-10s |" % (cod,consertos[cod]["cpf"],consertos[cod]["aparelho"],consertos[cod]["problema"],consertos[cod]["desconto"] + "%"))
+        print("------------------------------------------------------------------------------------------------------------------")
+        input("PRESSIONE ESPAÇO PARA CONTINUAR ")
+      
+      elif relatorio2 == "3":
+        print("------------------------------------------------------------------------------------------------------------------")
+        print("| %-10s | %-15s | %-20s | %-25s | %-10s |" % ("COD", "CPF", "APARELHO", "PROBLEMA", "DESCONTO"))
+        print("------------------------------------------------------------------------------------------------------------------")
+
+        for cod in consertos:
+         print("| %-10s | %-15s | %-20s | %-25s | %-10s |" % (cod,consertos[cod]["cpf"],consertos[cod]["aparelho"],consertos[cod]["problema"],consertos[cod]["desconto"] + "%"))
+        print("------------------------------------------------------------------------------------------------------------------")
+        input("PRESSIONE ESPAÇO PARA CONTINUAR ")
 
 
     elif relatorio == "0":
