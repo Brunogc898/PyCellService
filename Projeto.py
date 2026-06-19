@@ -1,6 +1,6 @@
 
 #MUDA A PARETE DE RELATORIO EM ALGO SOSTIFICADO
-
+#relatorio 4 para aprensat informaçoes especificas e o 3 relatorio de aniversariante/ maiores de 18 e menos de 25
 import datetime
 import pickle
 import os
