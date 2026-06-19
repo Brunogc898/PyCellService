@@ -81,7 +81,7 @@ CONSERTA APARELHO
 3- CANCELAR CONSERTO
 0- VOLTAR
 """)
-    consertar=input("ESCOLHA: ")
+     consertar=input("ESCOLHA: ")
  return consertar
 
 
