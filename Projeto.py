@@ -82,7 +82,7 @@ CONSERTA APARELHO
 0- VOLTAR
 """)
      consertar=input("ESCOLHA: ")
- return consertar
+     return consertar
 
 
 m= " "
