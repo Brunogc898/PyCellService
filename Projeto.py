@@ -66,7 +66,7 @@ CONSERTA CELULAR DA PRINCIPAL
 0- SAIR
 """)
   m=input("ESCOLHA: ")
- return m
+  return m
 
 def conserta_aparelho_menu():
    consertar = " "
