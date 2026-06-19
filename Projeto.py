@@ -1,17 +1,13 @@
 
 #MUDA A PARETE DE RELATORIO EM ALGO SOSTIFICADO
 
-
-
-
-
 import datetime
 import pickle
 import os
 import random
 
 usuarios = {
-  "12345678900": {"nome": "João Silva", "email": "joao.silva@gmail.com", "data": "10/01/2000", "estado": True},
+  "12345678900": {"nome": "João Silva", "email": "joao.silva@gmail.com", "data": "10/01/2000", "estado": True,},
   "98765432100": {"nome": "Maria Santos", "email": "mariasantos@gmail.com", "data": "15/03/1998", "estado": True},
   "11122233344": {"nome": "Carlos Oliveira", "email": "carlos.oliveira@gmail.com", "data": "22/08/1995", "estado": True},
   "55566677788": {"nome": "Ana Costa", "email": "ana.costa@gmail.com", "data": "30/11/2001", "estado": True},
@@ -56,9 +52,7 @@ except:
  arqServicos.close()
  arqConsertos.close()
 
-
-m= " "
-while m!= "0":
+def menu_principal():
   os.system('cls')
   print("""
 -----------------------------
@@ -72,12 +66,13 @@ CONSERTA CELULAR DA PRINCIPAL
 0- SAIR
 """)
   m=input("ESCOLHA: ")
+ return m
 
-  if m == "1":
+def conserta_aparelho_menu():
    consertar = " "
    os.system('cls')
    while consertar != "0":
-    print("""
+     print("""
 -----------------------------
 CONSERTA APARELHO
 -----------------------------
@@ -87,6 +82,15 @@ CONSERTA APARELHO
 0- VOLTAR
 """)
     consertar=input("ESCOLHA: ")
+ return consertar
+
+
+m= " "
+while m!= "0":
+ menu_principal()
+
+  if m == "1":
+    conserta_aparelho_menu()
 
     if consertar == "1":
         os.system('cls')
@@ -749,6 +753,7 @@ RELATÓRIO DE USUÁRIOS
 1- USUÁRIOS ATIVOS
 2- USUÁRIOS DESATIVOS
 3- TODOS OS USUÁRIOS
+4- RELATÓRIO COMPLEXA
 0- VOLTAR
 """)
       rel_usuario=input("DIGITE: ")
@@ -785,6 +790,10 @@ RELATÓRIO DE USUÁRIOS
         print("----------------------------------------------------------------------------------------------------------------")
         input("PRESSIONE ESPAÇO PARA CONTINUAR ")
 
+      elif rel_usuario == "4":
+        while
+           
+
     elif relatorio == "2":
       relatorio2 = " "
       while relatorio2 != "0":
@@ -796,6 +805,7 @@ RELATÓRIO DE SERVIÇOS/CONSERTOS A SEREM PRESTADOS
 1- SERVIÇOS/CONSERTOS ATIVOS
 2- SERVIÇOS/CONSERTOS INATIVOS
 3- TODOS OS SERVIÇOS/CONSERTOS
+4- RELATÓRIO COMPLEXA
 0- VOLTAR
 """)
       relatorio2=input("DIGITE: ")
