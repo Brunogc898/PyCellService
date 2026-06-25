@@ -1,4 +1,4 @@
-
+# NO menu de aniversariantes por a qunatiade de serviço q alguem pediu
 import datetime
 import pickle
 import os
