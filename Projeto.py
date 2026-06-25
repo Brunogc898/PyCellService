@@ -858,11 +858,7 @@ def relatorio_aniversariantes():
         for cpf in usuarios:
             if usuarios[cpf]["data"][3:5] == meses[aniver]:
                 achou = "sim"
-                print("| %-15s | %-20s | %-40s | %-10s |" %
-                      (cpf,
-                       usuarios[cpf]["nome"],
-                       usuarios[cpf]["email"],
-                       usuarios[cpf]["data"]))
+                print("| %-15s | %-20s | %-40s | %-10s |" % (cpf,usuarios[cpf]["nome"],usuarios[cpf]["email"],usuarios[cpf]["data"]))
 
         if achou == "":
             print("NENHUM USUÁRIO FAZ ANIVERSÁRIO NESSE MÊS.")
@@ -889,11 +885,7 @@ def relatorio_cidade():
         if cidade == cidadepro:
             achou = "sim"
 
-            print("| %-15s | %-20s | %-40s | %-20s |" %
-                  (cpf,
-                   usuarios[cpf]["nome"],
-                   usuarios[cpf]["email"],
-                   usuarios[cpf]["cidade"]))
+            print("| %-15s | %-20s | %-40s | %-20s |" % (cpf,usuarios[cpf]["nome"],usuarios[cpf]["email"],usuarios[cpf]["cidade"]))
 
     if achou == "":
         print("NENHUM USUÁRIO ENCONTRADO NESSA CIDADE.")
@@ -920,12 +912,7 @@ def relatorio_detalhado_servicos():
 
         desconto = consertos[cod]["desconto"]
 
-        print("| %-5s | %-25s | %-25s | %-35s | %-10s |" %
-              (cod,
-               nome,
-               consertos[cod]["aparelho"],
-               servico,
-               desconto + "%"))
+        print("| %-5s | %-25s | %-25s | %-35s | %-10s |" % (cod,nome,consertos[cod]["aparelho"],servico,desconto + "%"))
 
     print("--------------------------------------------------------------------------------------------------------------------")
     input("PRESSIONE ENTER PARA CONTINUAR ")
