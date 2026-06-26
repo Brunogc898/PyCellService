@@ -1,4 +1,3 @@
-#NO menu de aniversariantes por a qunatiade de serviço q alguem pediu
 import datetime
 import pickle
 import os
@@ -12,7 +11,8 @@ usuarios = {
   "11122233344": {"nome": "Carlos Oliveira", "email": "carlos.oliveira@gmail.com", "data": "22/08/1995", "cidade": "Caruaru", "estado": True},
   "55566677788": {"nome": "Ana Costa", "email": "ana.costa@gmail.com", "data": "30/11/2001", "cidade": "Petrolina", "estado": True},
   "12312445545": {"nome": "Ana Luiza", "email": "analuiza@gmail.com", "data": "12/12/2000", "cidade": "Garanhuns", "estado": True},
-  "99988877766": {"nome": "Pedro Almeida", "email": "pedro.almeida@gmail.com", "data": "06/04/2002", "cidade": "Afogados da Ingazeira", "estado": True}
+  "99988877766": {"nome": "Pedro Almeida", "email": "pedro.almeida@gmail.com", "data": "06/04/2002", "cidade": "Afogados da Ingazeira", "estado": True},
+  "44433322211": {"nome": "Lucas Ferreira", "email": "lucas.ferreira@gmail.com", "data": "25/07/1999", "cidade": "Caicó", "estado": True}
 }
 
 meses = {
@@ -49,6 +49,8 @@ def limparCPF(cpf):
     return cpf
 
 def carregar_dados():
+  global usuarios, servicos, consertos
+  
   try:
     arqUsuarios = open("Usuarios.dat", "rb")
     arqServicos = open("Servicos.dat", "rb")
@@ -59,13 +61,10 @@ def carregar_dados():
     arqUsuarios.close()
     arqServicos.close()
     arqConsertos.close()
-
-  except:
-    usuarios = {}
-    servicos = {}
-    consertos = {}
-    salvar_dados()
   
+  except:
+   salvar_dados()
+
   return usuarios, servicos, consertos
 
 def salvar_dados():
@@ -151,18 +150,19 @@ PROBLEMAS DIVERSOS
          input("PRESSIONE ENTER PARA CONTINUAR...")
 
 def catalogo_servicos ():
+      os.system('cls')
       print("""
 -----------------------------
 CATÁLOGO DE SERVIÇOS
 -----------------------------
 """)
-      print("--------------------------------------------------------------------------------------------------")
-      print("| %-10s | %-25s | %-40s | %-10s | %-10s|" % ("COD", "NOME", "DESCRIÇÃO", "VALOR", "ESTADO"))
-      print("--------------------------------------------------------------------------------------------------")
+      print("---------------------------------------------------------------------------------------------------------------")
+      print("| %-10s | %-25s | %-40s | %-10s | %-10s |" % ("COD", "NOME", "DESCRIÇÃO", "VALOR", "ESTADO"))
+      print("---------------------------------------------------------------------------------------------------------------")
       for nome in servicos:
         print("| %-10s | %-25s | %-40s | %-10s | %-10s |" % (nome,servicos[nome]["tipo"],servicos[nome]["descricao"],servicos[nome]["valor"],servicos[nome]["estado"]))
 
-      print("--------------------------------------------------------------------------------------------------")
+      print("---------------------------------------------------------------------------------------------------------------")
       tipo=input("ESCOLHA O CÓDIGO DO SERVIÇO PARA SOLICITAR:  ")
       
       if tipo in servicos and servicos[tipo]["estado"] == True:
@@ -248,6 +248,7 @@ def cancelar_servico ():
       input("PRESSIONE ENTER PARA CONTINUAR...")
 
 def menu_usuario ():
+        os.system('cls')
         print("""
 -----------------------------
 USUÁRIO
@@ -302,7 +303,11 @@ CADASTRAR USUÁRIO
           print("VOLTANDO...")
 
         else:
-         date = input("SUA DATA DE NASCIMENTO: ")
+         date = input("SUA DATA DE NASCIMENTO (DD/MM/AAAA): ")
+         
+         if "/" not in date:
+          date = date[:2] + "/" + date[2:4] + "/" + date[4:]
+         
          cidade = input("SUA CIDADE QUE RESIDE: ")
          usuarios[cpf] = {"nome": nome, "email": email, "data": date,"cidade": cidade, "estado": True }
 
@@ -698,7 +703,7 @@ ATUALIZAR SERVIÇO
          print("DESCRIÇÃO DO SERVIÇO ATUALIZADA COM SUCESSO!")
 
         elif att == "3":
-         valor=float(input("VALOR DO SERVIÇO NOVO: "))
+         valor=input("VALOR DO SERVIÇO NOVO: ")
          servicos[cod]["valor"] = valor
          salvar_dados()
          print("VALOR DO SERVIÇO ATUALIZADO COM SUCESSO!")
@@ -706,7 +711,7 @@ ATUALIZAR SERVIÇO
         elif att == "4":
           nome=input("NOME DO SERVIÇO NOVO: ")
           descricao=input("DESCRIÇÃO DO SERVIÇO NOVA: ")
-          valor=float(input("VALOR DO SERVIÇO NOVO: "))
+          valor=input("VALOR DO SERVIÇO NOVO: ")
           servicos[cod]["tipo"] = nome
           servicos[cod]["descricao"] = descricao
           servicos[cod]["valor"] = valor
@@ -786,27 +791,29 @@ RELATÓRIO DE SERVIÇOS/CONSERTOS A SEREM PRESTADOS
       return relatorio2
 
 def mostrar_usuarios(estado):
-    print("----------------------------------------------------------------------------------------------------------------------------------------")
+    os.system('cls')
+    print("----------------------------------------------------------------------------------------------------------------------")
     print("| %-15s | %-20s | %-30s | %-12s | %-25s |" % ("CPF", "NOME", "E-MAIL", "NASCIMENTO", "CIDADE"))
-    print("----------------------------------------------------------------------------------------------------------------------------------------")
+    print("----------------------------------------------------------------------------------------------------------------------")
 
     for cpf in usuarios:
         if estado == "todos" or usuarios[cpf]["estado"] == estado:
             print("| %-15s | %-20s | %-30s | %-12s | %-25s |" % (cpf,usuarios[cpf]["nome"],usuarios[cpf]["email"],usuarios[cpf]["data"],usuarios[cpf]["cidade"]))
 
-    print("----------------------------------------------------------------------------------------------------------------------------------------")
+    print("----------------------------------------------------------------------------------------------------------------------")
     input("PRESSIONE ENTER PARA CONTINUAR ")
 
 def mostrar_consertos(estado):
-    print("------------------------------------------------------------------------------------------------------------------")
-    print("| %-10s | %-15s | %-20s | %-25s | %-10s |" % ("COD", "CPF", "APARELHO", "PROBLEMA", "DESCONTO"))
-    print("------------------------------------------------------------------------------------------------------------------")
+    os.system('cls')
+    print("-----------------------------------------------------------------------------------------------------")
+    print("| %-10s | %-15s | %-25s | %-25s | %-10s |" % ("COD", "CPF", "APARELHO", "PROBLEMA", "DESCONTO"))
+    print("-----------------------------------------------------------------------------------------------------")
 
     for cod in consertos:
         if estado == "todos" or consertos[cod]["estado"] == estado:
-            print("| %-10s | %-15s | %-20s | %-25s | %-10s |" % (cod,consertos[cod]["cpf"],consertos[cod]["aparelho"],consertos[cod]["problema"],consertos[cod]["desconto"] + "%"))
+            print("| %-10s | %-15s | %-25s | %-25s | %-10s |" % (cod,consertos[cod]["cpf"],consertos[cod]["aparelho"],consertos[cod]["problema"],consertos[cod]["desconto"] + "%"))
 
-    print("------------------------------------------------------------------------------------------------------------------")
+    print("-----------------------------------------------------------------------------------------------------")
     input("PRESSIONE ENTER PARA CONTINUAR ")
 
 def menu_complexo():
@@ -929,7 +936,6 @@ RELATÓRIO POR IDADE
 """)
          opcao = input("ESCOLHA: ")
          return opcao
-
 
 #menu principal
 m= " "
@@ -1073,24 +1079,24 @@ while m!= "0":
       
       while relatorio2 != "0":
        os.system('cls')
-       relatorio2=menu_consetos()
+       relatorio2 =  menu_consetos()
       
-      if relatorio2 == "1":
+       if relatorio2 == "1":
         mostrar_consertos(True)
 
-      elif relatorio2 == "2":
+       elif relatorio2 == "2":
         mostrar_consertos(False)
       
-      elif relatorio2 == "3":
+       elif relatorio2 == "3":
         mostrar_consertos("todos")
 
-      elif relatorio2 == "0":
-       print("VOLTANDO...")
-       input("PRESSIONE ESPAÇO PARA CONTINUAR ")
-      
-      else:
-       print("OPÇÃO INVÁLIDA, POR FAVOR ESCOLHA UMA OPÇÃO VÁLIDA")
-       input("PRESSIONE ESPAÇO PARA CONTINUAR ")
+       elif relatorio2 == "0":
+        print("VOLTANDO...")
+        input("PRESSIONE ESPAÇO PARA CONTINUAR ")
+
+       else:
+        print("OPÇÃO INVÁLIDA, POR FAVOR ESCOLHA UMA OPÇÃO VÁLIDA")
+        input("PRESSIONE ESPAÇO PARA CONTINUAR ")
   
     elif relatorio == "3":
       relatorio3 = " "
